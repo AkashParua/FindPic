@@ -26,13 +26,14 @@ async def create_upload_file(file: UploadFile = File(...)):
     index.upsert(vectors=[data])
     return {"filename": file.filename}
     
-@app.get('/search/{k}')
-async def search_image(k : int , file: UploadFile = File(...) ):
+@app.get('/search')
+async def search_image( file: UploadFile = File(...) ):
     with open(os.path.join("QueryImages", file.filename), "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     vector_image = vectorize('QueryImages',file.filename)
-    results = index.query(vector_image, top_k=int(k) , include_metadata=True)
+    results = index.query(vector_image, top_k=1 , include_metadata=True)
     print(results)
+    return FileResponse(os.path.join('Images',results['matches'][0]['id']))
 
 @app.delete('/delete/{filename}')
 async def delete_image(filename : str):
