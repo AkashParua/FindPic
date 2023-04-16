@@ -24,5 +24,5 @@ def download_images(url, folder):
                 f.write(requests.get(src).content)
                 
 #download_images('https://imgflip.com/memetemplates','ScrapedImages')
-for i in range(12,21):
+for i in range(22,50):
     download_images(f'https://imgflip.com/memetemplates?page={i}', 'ScrapedImages')
